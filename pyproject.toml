@@ -1,0 +1,81 @@
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "workout_tracker"
+version = "0.0.0"
+description = ""
+readme = "README.md"
+authors = ["Stefan Lindt <stefan_p.koch@web.de>"]
+# license = ""
+repository = "https://github.com/S7ef4n/workout-tracker"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.dev-dependencies]
+bandit = "^1.7.4"
+black = "^22.6.0"
+mypy = "^0.971"
+darglint = "^1.8.1"
+isort = {extras = ["colors"], version = "^5.10.1"}
+mypy-extensions = "^0.4.3"
+pre-commit = "^2.20.0"
+pydocstyle = "^6.1.1"
+pylint = "^2.15.0"
+pytest = "^7.1.2"
+pyupgrade = "^2.37.3"
+safety = "^2.1.1"
+coverage = "^6.4.4"
+pytest-html = "^3.1.1"
+pytest-cov = "^3.0.0"
+flake8 = "^5.0.4"
+
+
+[tool.black]
+target-version = ["py311"]
+line-length = 79
+color = true
+
+[tool.mypy]
+ignore_missing_imports = true
+strict_optional = false
+pretty = true
+
+[tool.isort]
+multi_line_output = 3
+use_parentheses = true
+include_trailing_comma = true
+line_length = 79
+
+[tool.pylint.master]
+fail-under = 8
+
+[tool.pylint.'MESSAGE CONTROL']
+disable = [
+    "C0114",
+    "R0903"
+]
+
+[tool.pylint.format]
+max-line-length = 79
+good-names = "i, j, k"
+
+[tool.pylint.reports]
+reports = "no"
+
+[tool.pytest.ini_options]
+addopts = "--junitxml=junit_results.xml --cov-report=xml:coverage.xml --cov-fail-under=80"
+markers= [
+    "unit",
+    "integration",
+    "system"
+]
+testpaths = [
+    "tests"
+]
+
+[tool.coverage.run]
+source = ["tests"]
+branch = true
