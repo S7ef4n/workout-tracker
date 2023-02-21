@@ -32,7 +32,7 @@ def get_value_and_unit(
         raise ValueError("Input text needs to contain exactly one unit!")
 
     unit = units[0]
-    if (unit not in DistanceUnit) and (unit not in DistanceUnit):
+    if (unit not in DistanceUnit) and (unit not in WeightUnit):
         raise UnknownUnitError(f"The input unit of {unit} is unknown.")
 
     return float(values[0]), unit

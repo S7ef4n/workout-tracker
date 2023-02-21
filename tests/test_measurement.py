@@ -24,7 +24,7 @@ def test_get_value_and_unit(text, exp_value, exp_str):
     value, unit = get_value_and_unit(string=text)
     assert value == exp_value
     assert unit == exp_str
-    assert isinstance(unit, DistanceUnit) or isinstance(unit, WeightUnit)
+    assert (unit in DistanceUnit) or (unit in WeightUnit)
 
 
 @pytest.fixture
