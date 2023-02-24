@@ -141,7 +141,7 @@ class Measurement(ABC):
         Returns:
             str: Measurement and SI unit
         """
-        return str(self.unit.to_si(self.value)) + " " + self.si_unit
+        return str(self.si_value) + " " + self.si_unit
 
     @property
     def si_value(self) -> float:

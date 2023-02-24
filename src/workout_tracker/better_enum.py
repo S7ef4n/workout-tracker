@@ -1,3 +1,5 @@
+# pylint: disable=no-value-for-parameter
+
 from enum import EnumMeta, StrEnum
 from typing import Any
 
