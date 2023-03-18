@@ -49,7 +49,7 @@ UNIT_CONVERSIONS = {
     "mile": 1609.344,
     "yard": 0.9144,
     "ft": 0.3048,
-    "inch": 0.0254,
+    "in": 0.0254,
     "kg": 1,
     "lb": 0.45359237,
     "pood": 16,
@@ -123,7 +123,7 @@ class Measurement(ABC):
     def __init__(self, value: float, unit: DistanceUnit | WeightUnit) -> None:
         self.value = value
         self.si_unit = "Undefined"
-        self.unit = Unit(name=unit, in_si=UNIT_CONVERSIONS[unit])
+        self.unit = Unit(name=str(unit), in_si=UNIT_CONVERSIONS[unit])
 
     def __str__(self) -> str:
         """
@@ -134,14 +134,23 @@ class Measurement(ABC):
         """
         return str(self.value) + " " + self.unit.name
 
-    def __repr__(self) -> str:
+    def __eq__(self, other: object) -> bool:
         """
-        Represents measurement as string in SI unit
+        Check equality between instances. Returns True if object is of the
+        same class and represents the same value in SI units.
+
+        Args:
+            other (object): Object to compare self to.
 
         Returns:
-            str: Measurement and SI unit
+            bool: Whether measurements are equal.
         """
-        return str(self.si_value) + " " + self.si_unit
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+
+        same_value = self.si_value == other.si_value
+        same_si = self.si_unit == other.si_unit
+        return same_si and same_value
 
     @property
     def si_value(self) -> float:

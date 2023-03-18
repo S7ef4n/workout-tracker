@@ -1,12 +1,14 @@
+from copy import deepcopy
+
 import pytest
 
 from workout_tracker.measurement import (
     Distance,
-    Unit,
     DistanceUnit,
-    WeightUnit,
+    Unit,
     UnknownUnitError,
     Weight,
+    WeightUnit,
     get_value_and_unit,
 )
 
@@ -15,9 +17,11 @@ from workout_tracker.measurement import (
 def unit_4_si():
     return Unit(name="test", in_si=4)
 
+
 @pytest.fixture
 def dist_2_ft():
     return Distance(2, unit=DistanceUnit.FT)
+
 
 @pytest.fixture
 def weight_2_pood():
@@ -40,13 +44,7 @@ def test_get_value_and_unit(text, exp_value, exp_str):
     assert (unit in DistanceUnit) or (unit in WeightUnit)
 
 
-@pytest.mark.parametrize(
-    "text",
-    [
-        "100 lb 2",
-        "10 kg m"
-    ]
-)
+@pytest.mark.parametrize("text", ["100 lb 2", "10 kg m"])
 def test_get_value_and_unit_raises(text):
     with pytest.raises(ValueError):
         _, _ = get_value_and_unit(text)
@@ -89,15 +87,18 @@ class TestDistance:
         assert isinstance(dist.unit, Unit)
         assert dist.unit.name == DistanceUnit.MILE
 
-
     def test_str_(self, dist_2_ft):
         assert str(dist_2_ft) == "2 ft"
 
-    def test_repr_(self, dist_2_ft):
-        assert repr(dist_2_ft) == "0.6096 m"
-    
     def test_si_value(self, dist_2_ft):
         assert dist_2_ft.si_value == 0.6096
+
+    def test_eq(self, dist_2_ft):
+        assert dist_2_ft == deepcopy(dist_2_ft)
+        assert dist_2_ft == Distance(value=0.6096, unit=DistanceUnit.M)
+        assert dist_2_ft != Distance(value=2, unit=DistanceUnit.M)
+        assert dist_2_ft != Distance(value=3, unit=DistanceUnit.FT)
+        assert dist_2_ft != Weight(value=2, unit=WeightUnit.KG)
 
 
 class TestWeight:
@@ -121,8 +122,12 @@ class TestWeight:
     def test_str_(self, weight_2_pood):
         assert str(weight_2_pood) == "2 pood"
 
-    def test_repr_(self, weight_2_pood):
-        assert repr(weight_2_pood) == "32 kg"
-    
     def test_si_value(self, weight_2_pood):
         assert weight_2_pood.si_value == 32
+
+    def test_eq(self, weight_2_pood):
+        assert weight_2_pood == deepcopy(weight_2_pood)
+        assert weight_2_pood == Weight(value=32, unit=WeightUnit.KG)
+        assert weight_2_pood != Weight(value=2, unit=WeightUnit.KG)
+        assert weight_2_pood != Weight(value=3, unit=WeightUnit.POOD)
+        assert weight_2_pood != Distance(value=2, unit=DistanceUnit.FT)
