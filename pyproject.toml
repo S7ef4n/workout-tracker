@@ -13,25 +13,12 @@ repository = "https://github.com/S7ef4n/workout-tracker"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-
-[tool.poetry.dev-dependencies]
-
-#mypy-extensions = "^0.4.3"
-#pre-commit = "^2.20.0"
-#pydocstyle = "^6.1.1"
-#pylint = "^2.15.0"
-#pytest = "^7.1.2"
-#pyupgrade = "^2.37.3"
-#safety = "^2.1.1"
-#coverage = "^6.4.4"
-#pytest-html = "^3.1.1"
-#pytest-cov = "^3.0.0"
-
+pytimeparse = "^1.1.8"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.0.0"
 flake8 = "^6.0.0"
-bandit = "^1.7.4"
+bandit = {extras = ["toml"], version = "^1.7.4"}
 black = "^23.1.0"
 darglint = "^1.8.1"
 isort = {extras = ["colors"], version = "^5.12.0"}
@@ -44,6 +31,7 @@ coverage = "^7.1.0"
 pytest-html = "^3.2.0"
 pytest-cov = "^4.0.0"
 pylint = "^2.16.2"
+hypothesis = "^6.70.0"
 
 [tool.black]
 target-version = ["py311"]
@@ -63,6 +51,7 @@ line_length = 79
 
 [tool.pylint.master]
 fail-under = 8
+ignore-paths = ".*/tests/.*.py"
 
 [tool.pylint.'MESSAGE CONTROL']
 disable = [
@@ -91,3 +80,6 @@ testpaths = [
 [tool.coverage.run]
 source = ["tests"]
 branch = true
+
+[tool.bandit]
+exclude_dirs = ["tests",]
